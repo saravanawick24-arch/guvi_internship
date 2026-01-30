@@ -7,14 +7,19 @@ try {
         throw new Exception("Redis extension not loaded");
     }
 
+    $redisHost = getenv('REDIS_HOST') ?: "127.0.0.1";
+    $redisPort = getenv('REDIS_PORT') ?: 6379;
+    $redisPassword = getenv('REDIS_PASSWORD') ?: "";
+
     $redis = new Redis();
-    // Connect to Redis (default port 6379)
-    if (!$redis->connect("127.0.0.1", 6379)) {
+    
+    if (!$redis->connect($redisHost, $redisPort)) {
         throw new Exception("Could not connect to Redis server");
     }
     
-    // Optional: Authenticate if needed
-    // $redis->auth('password');
+    if (!empty($redisPassword)) {
+        $redis->auth($redisPassword);
+    }
     
 } catch (Exception $e) {
     http_response_code(500);

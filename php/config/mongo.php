@@ -8,7 +8,8 @@ try {
         throw new Exception('MongoDB extension not loaded');
     }
     
-    $client = new MongoDB\Client("mongodb://localhost:27017");
+    $mongoUri = getenv('MONGODB_URI') ?: "mongodb://localhost:27017";
+    $client = new MongoDB\Client($mongoUri);
     $db = $client->selectDatabase('guvi_intern'); 
     $collection = $db->selectCollection('profiles');
     

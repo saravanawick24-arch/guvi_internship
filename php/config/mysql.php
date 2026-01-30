@@ -1,10 +1,10 @@
 <?php
 
-$servername="127.0.0.1";
-$username="root";
-$password="";
-$dbname="guvi_intern";
-$port=3307;
+$servername = getenv('DB_HOST') ?: "127.0.0.1";
+$username = getenv('DB_USER') ?: "root";
+$password = getenv('DB_PASS') ?: "";
+$dbname = getenv('DB_NAME') ?: "guvi_intern";
+$port = getenv('DB_PORT') ?: 3307;
 
 try {
     // 1. Connect without Database first to ensure we can create it
