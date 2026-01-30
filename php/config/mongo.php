@@ -8,7 +8,7 @@ try {
         throw new Exception('MongoDB extension not loaded');
     }
     
-    $mongoUri = getenv('MONGO_URI') ?: "mongodb://localhost:27017";
+    $mongoUri = getenv('MONGO_URI') ?: "mongodb+srv://saravana24057_db_user:LNUxmkiWupaVY7RG@intern.zsnnkal.mongodb.net/";
     $client = new MongoDB\Client($mongoUri);
     
     // Select Database and Collection as per request
