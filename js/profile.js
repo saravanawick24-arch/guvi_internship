@@ -44,24 +44,29 @@ $(document).ready(function () {
                 contact: $('#contact').val()
             },
             success: function (response) {
-                try {
-                    const res = JSON.parse(response);
-                    if (res.success) {
-                        if (res.new_email) {
-                            localStorage.setItem("userEmail", res.new_email);
-                            // Also update the 'email' variable so subsequent requests in this session work
-                            // However, we are inside a callback, and 'email' is a const in the outer scope (or let/var).
-                            // Since 'email' is const in the document.ready, we can't reassign it easily without reloading.
-                            // But updating localStorage is the critical part for next page load.
-                            // We can advise a reload or just let it be. 
-                        }
-                        $('#msg').html('<div class="alert alert-success">' + res.message + '</div>');
-                    } else {
-                        $('#msg').html('<div class="alert alert-danger">' + (res.error || 'Update failed') + '</div>');
+                let res = response;
+                if (typeof response === 'string') {
+                    try {
+                        res = JSON.parse(response);
+                    } catch (e) {
+                        console.error("Could not parse JSON", e);
+                        $('#msg').html('<div class="alert alert-danger">Server returned invalid format</div>');
+                        return;
                     }
-                } catch (e) {
-                    // Handle non-JSON response (backward compatibility)
-                    $('#msg').html('<div class="alert alert-success">' + response + '</div>');
+                }
+
+                if (res.success) {
+                    if (res.new_email) {
+                        localStorage.setItem("userEmail", res.new_email);
+                        $('#msg').html('<div class="alert alert-success">' + res.message + ' Reloading...</div>');
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1500);
+                    } else {
+                        $('#msg').html('<div class="alert alert-success">' + res.message + '</div>');
+                    }
+                } else {
+                    $('#msg').html('<div class="alert alert-danger">' + (res.error || 'Update failed') + '</div>');
                 }
             },
             error: function (xhr) {

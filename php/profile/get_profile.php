@@ -51,7 +51,7 @@ try {
 
 $response = [
     "username" => $profile['username'] ?? $user['name'],
-    "email" => $profile['email'] ?? $user['email'],
+    "email" => $user['email'], // Always use MySQL email as source of truth
     "age" => $profile['age'] ?? '',
     "dob" => $profile['dob'] ?? '',
     "contact" => $profile['contact'] ?? ''
