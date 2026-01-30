@@ -8,10 +8,15 @@ try {
         throw new Exception('MongoDB extension not loaded');
     }
     
-    $mongoUri = getenv('MONGODB_URI') ?: "mongodb://localhost:27017";
+    $mongoUri = getenv('MONGO_URI') ?: "mongodb://localhost:27017";
     $client = new MongoDB\Client($mongoUri);
-    $db = $client->selectDatabase('guvi_intern'); 
-    $collection = $db->selectCollection('profiles');
+    
+    // Select Database and Collection as per request
+    $db = $client->guvi_internship;
+    $profiles = $db->profiles;
+    
+    // Alias for backward compatibility with existing code that expects $collection
+    $collection = $profiles;
     
     // Test connection by pinging
     $client->selectDatabase('admin')->command(['ping' => 1]);
